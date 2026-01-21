@@ -1,0 +1,1 @@
+{"version":3,"file":"AppointmentCard.d.ts","sourceRoot":"","sources":["AppointmentCard.tsx"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,MAAM,aAAa,CAAA;AAIrC,UAAU,oBAAoB;IAC5B,OAAO,EAAE,OAAO,CAAA;IAChB,cAAc,CAAC,EAAE,CAAC,SAAS,EAAE,MAAM,EAAE,MAAM,EAAE,MAAM,KAAK,IAAI,CAAA;CAC7D;AAED,eAAO,MAAM,eAAe,GAAI,6BAA6B,oBAAoB,4CA2EhF,CAAA"}

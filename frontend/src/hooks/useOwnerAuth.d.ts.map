@@ -1,0 +1,1 @@
+{"version":3,"file":"useOwnerAuth.d.ts","sourceRoot":"","sources":["useOwnerAuth.ts"],"names":[],"mappings":"AAGA,MAAM,WAAW,QAAQ;IACvB,EAAE,EAAE,MAAM,CAAA;IACV,KAAK,EAAE,MAAM,CAAA;IACb,UAAU,EAAE,MAAM,CAAA;IAClB,YAAY,EAAE,MAAM,CAAA;CACrB;AAED,eAAO,MAAM,YAAY;;;;;mBASP,MAAM,YAAY,MAAM;oBA4BxB,MAAM,YAAY,MAAM,gBAAgB,MAAM;;CAiD/D,CAAA"}
