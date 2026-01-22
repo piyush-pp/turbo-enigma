@@ -10,6 +10,7 @@ import {
   LogOut,
   Menu,
   X,
+  Package,
 } from 'lucide-react'
 
 interface OwnerSidebarProps {
@@ -28,6 +29,7 @@ export const OwnerSidebar = ({ businessId }: OwnerSidebarProps) => {
     { path: 'services', label: 'Services', icon: Briefcase },
     { path: 'staff', label: 'Staff', icon: Users },
     { path: 'bookings', label: 'Bookings', icon: Calendar },
+    { path: 'modules', label: 'Extensions', icon: Package },
   ]
 
   const isActive = (path: string) => {

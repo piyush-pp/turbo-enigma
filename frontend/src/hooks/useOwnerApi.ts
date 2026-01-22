@@ -48,6 +48,18 @@ export interface Booking {
   notes?: string
 }
 
+export interface Module {
+  key: string
+  name: string
+  description: string
+  enabled: boolean
+  defaultEnabled: boolean
+}
+
+export interface ModulesResponse {
+  modules: Module[]
+}
+
 // Business Management
 export const getBusiness = async (businessId: string) => {
   const response = await apiClient.get(`/owner/business/${businessId}`)
@@ -128,4 +140,21 @@ export const getAvailabilityRules = async (staffId: string) => {
 export const updateAvailabilityRules = async (staffId: string, rules: any) => {
   const response = await apiClient.put(`/owner/availability/${staffId}`, rules)
   return response.data
+}
+
+// Modules Management
+export const getModules = async (businessId?: string) => {
+  const url = businessId 
+    ? `/owner/modules?businessId=${businessId}`
+    : '/owner/modules'
+  const response = await apiClient.get(url)
+  return response.data as ModulesResponse
+}
+
+export const toggleModule = async (moduleKey: string, enabled: boolean, businessId?: string) => {
+  const url = businessId
+    ? `/owner/modules/${moduleKey}?businessId=${businessId}`
+    : `/owner/modules/${moduleKey}`
+  const response = await apiClient.patch(url, { enabled })
+  return response.data as Module
 }

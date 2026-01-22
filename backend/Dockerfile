@@ -66,7 +66,4 @@ ENTRYPOINT ["dumb-init", "--"]
 # Start the application
 CMD ["node", "dist/server.js"]
 
-# Start the application
-CMD ["node", "dist/server.js"]
-
 EXPOSE 3000

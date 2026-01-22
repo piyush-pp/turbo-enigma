@@ -5,6 +5,7 @@ import { BusinessSetup } from './owner/BusinessSetup'
 import { ServiceManagement } from './owner/ServiceManagement'
 import { StaffManagement } from './owner/StaffManagement'
 import { BookingsView } from './owner/BookingsView'
+import { ModulesManagement } from './owner/ModulesManagement'
 
 export const OwnerDashboardPage = () => {
   const { businessId, section } = useParams<{ businessId: string; section?: string }>()
@@ -23,6 +24,8 @@ export const OwnerDashboardPage = () => {
         return <StaffManagement businessId={businessId} />
       case 'bookings':
         return <BookingsView businessId={businessId} />
+      case 'modules':
+        return <ModulesManagement businessId={businessId} />
       default:
         return <OwnerOverview businessId={businessId} />
     }
