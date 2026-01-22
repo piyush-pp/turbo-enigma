@@ -9,6 +9,7 @@ import { serviceRouter } from './routes/service'
 import { availabilityRouter } from './routes/availability'
 import { slotsRouter } from './routes/slots'
 import { bookingRouter } from './routes/booking'
+import { modulesRouter } from './routes/modules'
 import { errorHandler } from './middlewares/errorHandler'
 import { corsMiddleware } from './middlewares/cors'
 import { securityHeaders, requestId, noCache } from './middlewares/security'
@@ -64,6 +65,7 @@ app.use('/api/owner/services', serviceRouter)
 app.use('/api/owner/availability', availabilityRouter)
 app.use('/api/public/slots', slotsRouter)
 app.use('/api/bookings', bookingRouter)
+app.use('/api/owner/modules', modulesRouter)
 
 // 404 handler
 app.use((_req: Request, res: Response) => {

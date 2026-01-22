@@ -10,6 +10,7 @@ import {
   LogOut,
   Menu,
   X,
+  Puzzle,
 } from 'lucide-react'
 
 interface OwnerSidebarProps {
@@ -27,7 +28,9 @@ export const OwnerSidebar = ({ businessId }: OwnerSidebarProps) => {
     { path: 'business', label: 'Business Setup', icon: Settings },
     { path: 'services', label: 'Services', icon: Briefcase },
     { path: 'staff', label: 'Staff', icon: Users },
+
     { path: 'bookings', label: 'Bookings', icon: Calendar },
+    { path: 'extensions', label: 'Extensions', icon: Puzzle },
   ]
 
   const isActive = (path: string) => {
@@ -60,9 +63,8 @@ export const OwnerSidebar = ({ businessId }: OwnerSidebarProps) => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:static inset-y-0 left-0 w-64 bg-gray-900 text-white z-40 transform lg:transform-none transition-transform ${
-          isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-        }`}
+        className={`fixed lg:static inset-y-0 left-0 w-64 bg-gray-900 text-white z-40 transform lg:transform-none transition-transform ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+          }`}
       >
         <div className="h-full flex flex-col">
           {/* Header */}
@@ -83,11 +85,10 @@ export const OwnerSidebar = ({ businessId }: OwnerSidebarProps) => {
                       navigate(`/owner/${businessId}/${item.path}`)
                       setIsOpen(false)
                     }}
-                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${
-                      isActive(item.path)
-                        ? 'bg-blue-600 text-white'
-                        : 'text-gray-300 hover:bg-gray-800'
-                    }`}
+                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors ${isActive(item.path)
+                      ? 'bg-blue-600 text-white'
+                      : 'text-gray-300 hover:bg-gray-800'
+                      }`}
                   >
                     <Icon size={20} />
                     <span>{item.label}</span>
