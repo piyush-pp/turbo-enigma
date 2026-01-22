@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE_URL = process.env.VITE_API_URL || 'http://localhost:3000/api'
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
 
 const publicApiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -66,12 +66,12 @@ export const getBusinessBySlug = async (slug: string): Promise<PublicBusiness> =
 }
 
 export const getServices = async (businessId: string): Promise<PublicService[]> => {
-  const response = await publicApiClient.get(`/owner/services/${businessId}`)
+  const response = await publicApiClient.get(`/owner/services/public/${businessId}`)
   return response.data
 }
 
 export const getStaff = async (businessId: string): Promise<PublicStaff[]> => {
-  const response = await publicApiClient.get(`/owner/staff/${businessId}`)
+  const response = await publicApiClient.get(`/owner/staff/public/${businessId}`)
   return response.data.filter((s: PublicStaff) => s.isActive)
 }
 

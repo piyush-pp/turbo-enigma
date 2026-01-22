@@ -21,12 +21,12 @@ export const useOwnerAuth = () => {
       setLoading(true)
       setError(null)
       try {
-        const response = await apiClient.post('/owner/auth/login', { email, password })
+        const response = await apiClient.post('/auth/login', { email, password })
         const userData: AuthUser = {
           id: response.data.userId,
           email: response.data.email,
           businessId: response.data.businessId,
-          businessName: response.data.businessName,
+          businessName: response.data.name || 'My Business',
         }
         localStorage.setItem('accessToken', response.data.accessToken)
         localStorage.setItem('refreshToken', response.data.refreshToken)
@@ -45,20 +45,22 @@ export const useOwnerAuth = () => {
   )
 
   const signup = useCallback(
-    async (email: string, password: string, businessName: string) => {
+    async (email: string, password: string, businessName: string, name: string = 'Owner') => {
       setLoading(true)
       setError(null)
       try {
-        const response = await apiClient.post('/owner/auth/register', {
+        const response = await apiClient.post('/auth/signup', {
           email,
           password,
+          name,
           businessName,
+          role: 'OWNER',
         })
         const userData: AuthUser = {
           id: response.data.userId,
           email: response.data.email,
           businessId: response.data.businessId,
-          businessName: response.data.businessName,
+          businessName: response.data.businessName || businessName,
         }
         localStorage.setItem('accessToken', response.data.accessToken)
         localStorage.setItem('refreshToken', response.data.refreshToken)

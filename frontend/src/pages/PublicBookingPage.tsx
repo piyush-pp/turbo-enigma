@@ -127,7 +127,7 @@ export const PublicBookingPage = () => {
   }, [selectedServiceId, selectedStaffId])
 
   // Get selected service
-  const selectedService = services.find((s) => s.id === selectedServiceId)
+  const selectedService = Array.isArray(services) ? services.find((s) => s.id === selectedServiceId) : undefined
 
   // Determine current step based on actual data
   const getActualCurrentStep = () => {
@@ -360,7 +360,7 @@ export const PublicBookingPage = () => {
           business={business}
           service={selectedService || null}
           selectedSlot={selectedSlot}
-          staff={staff.find((s) => s.id === selectedStaffId)}
+          staff={Array.isArray(staff) ? staff.find((s) => s.id === selectedStaffId) : undefined}
           formData={formData}
           isProcessing={isSubmitting}
         />

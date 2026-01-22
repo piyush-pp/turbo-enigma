@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
 import { OwnerProtectedRoute } from '@/components/OwnerProtectedRoute'
 import { Sidebar } from '@/components/Sidebar'
@@ -16,7 +16,13 @@ import { OwnerLoginPage } from '@/pages/OwnerLoginPage'
 import { OwnerDashboardPage } from '@/pages/OwnerDashboardPage'
 import '@/index.css'
 
-function DashboardLayout({ businessId }: { businessId: string }) {
+function DashboardLayout() {
+  const { businessId } = useParams<{ businessId: string }>()
+  
+  if (!businessId) {
+    return <div>Invalid business ID</div>
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Sidebar businessId={businessId} />
@@ -64,7 +70,7 @@ function App() {
           path="/dashboard/:businessId/*"
           element={
             <ProtectedRoute>
-              <DashboardLayout businessId={''} />
+              <DashboardLayout />
             </ProtectedRoute>
           }
         />

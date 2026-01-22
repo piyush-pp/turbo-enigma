@@ -1,5 +1,6 @@
 import axios from 'axios';
-const API_BASE_URL = process.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+console.log('API_BASE_URL:', API_BASE_URL);
 const publicApiClient = axios.create({
     baseURL: API_BASE_URL,
     headers: {
@@ -12,11 +13,11 @@ export const getBusinessBySlug = async (slug) => {
     return response.data;
 };
 export const getServices = async (businessId) => {
-    const response = await publicApiClient.get(`/owner/services/${businessId}`);
+    const response = await publicApiClient.get(`/owner/services/public/${businessId}`);
     return response.data;
 };
 export const getStaff = async (businessId) => {
-    const response = await publicApiClient.get(`/owner/staff/${businessId}`);
+    const response = await publicApiClient.get(`/owner/staff/public/${businessId}`);
     return response.data.filter((s) => s.isActive);
 };
 export const getAvailableSlots = async (businessSlug, serviceId, date, staffId, timezone) => {

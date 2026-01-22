@@ -3,6 +3,9 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+# Accept build arguments for environment variables
+ARG VITE_API_URL=http://localhost:3000/api
+
 # Copy package files
 COPY package*.json ./
 COPY tsconfig.json tsconfig.node.json ./
@@ -14,8 +17,8 @@ COPY src ./src/
 # Install dependencies
 RUN npm ci --prefer-offline --no-audit
 
-# Build the application
-RUN npm run build
+# Build the application with the build arg as environment variable
+RUN VITE_API_URL=$VITE_API_URL npm run build
 
 # Runtime stage - Using nginx for serving static files
 FROM nginx:alpine

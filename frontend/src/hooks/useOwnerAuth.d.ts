@@ -10,7 +10,7 @@ export declare const useOwnerAuth: () => {
     loading: boolean;
     error: string;
     login: (email: string, password: string) => Promise<AuthUser>;
-    signup: (email: string, password: string, businessName: string) => Promise<AuthUser>;
+    signup: (email: string, password: string, businessName: string, name?: string) => Promise<AuthUser>;
     logout: () => void;
 };
 //# sourceMappingURL=useOwnerAuth.d.ts.map

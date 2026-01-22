@@ -82,11 +82,30 @@ services:
       timeout: 10s
       retries: 3
 
+  # pgAdmin - PostgreSQL Database UI
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: appoint-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@example.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - appoint-network
+    depends_on:
+      - postgres
+
   # Frontend Application
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:3000/api}
     container_name: appoint-frontend
     restart: unless-stopped
     depends_on:
@@ -94,7 +113,7 @@ services:
     ports:
       - "5173:80"
     environment:
-      VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:3000/api}
     volumes:
       - ./frontend/src:/app/src
       - ./frontend/public:/app/public
@@ -109,6 +128,7 @@ services:
 volumes:
   postgres_data:
   redis_data:
+  pgadmin_data:
 
 networks:
   appoint-network:
