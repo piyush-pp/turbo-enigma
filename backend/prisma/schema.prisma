@@ -1,0 +1,208 @@
+// Prisma schema for Appoint - Appointment Management System
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// ENUMS
+// ============================================================================
+
+enum UserRole {
+  OWNER
+  STAFF
+  ADMIN
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum Currency {
+  USD
+  EUR
+  GBP
+  INR
+  AUD
+}
+
+// ============================================================================
+// USER
+// ============================================================================
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      UserRole @default(STAFF)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  ownedBusinesses Business[]
+  staffProfiles   Staff[]
+
+  @@index([email])
+  @@index([deletedAt])
+}
+
+// ============================================================================
+// BUSINESS
+// ============================================================================
+
+model Business {
+  id            String   @id @default(cuid())
+  name          String
+  description   String?
+  isSingleStaff Boolean  @default(false)
+  timezone      String   @default("UTC")
+  slug          String   @unique
+  ownerId       String
+  owner         User     @relation(fields: [ownerId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  deletedAt     DateTime?
+
+  staff          Staff[]
+  services       Service[]
+  bookings       Booking[]
+  availabilityRules AvailabilityRule[]
+
+  @@index([ownerId])
+  @@index([slug])
+  @@index([deletedAt])
+}
+
+// ============================================================================
+// STAFF
+// ============================================================================
+
+model Staff {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  businessId String
+  business  Business @relation(fields: [businessId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  services          StaffService[]
+  availabilityRules AvailabilityRule[]
+  bookings          Booking[]
+
+  @@unique([userId, businessId])
+  @@index([userId])
+  @@index([businessId])
+  @@index([deletedAt])
+}
+
+// ============================================================================
+// SERVICE
+// ============================================================================
+
+model Service {
+  id               String   @id @default(cuid())
+  businessId       String
+  business         Business @relation(fields: [businessId], references: [id])
+  name             String
+  description      String?
+  price            Float?
+  currency         String   @default("USD")
+  durationMinutes  Int      // in minutes (required)
+  imageUrl         String?
+  isActive         Boolean  @default(true)
+  isPluginEnabled  Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  deletedAt        DateTime?
+
+  staff    StaffService[]
+  bookings Booking[]
+
+  @@index([businessId])
+  @@index([isActive])
+  @@index([deletedAt])
+}
+
+// ============================================================================
+// STAFF SERVICE (Many-to-Many)
+// ============================================================================
+
+model StaffService {
+  id        String   @id @default(cuid())
+  staffId   String
+  staff     Staff    @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  serviceId String
+  service   Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([staffId, serviceId])
+  @@index([staffId])
+  @@index([serviceId])
+}
+
+// ============================================================================
+// AVAILABILITY RULE
+// ============================================================================
+
+model AvailabilityRule {
+  id         String   @id @default(cuid())
+  staffId    String
+  staff      Staff    @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  dayOfWeek  Int // 0-6 (Sunday-Saturday)
+  startTime  String // HH:mm format
+  endTime    String // HH:mm format
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([staffId, dayOfWeek])
+  @@index([staffId])
+  @@index([businessId])
+  @@index([dayOfWeek])
+}
+
+// ============================================================================
+// BOOKING
+// ============================================================================
+
+model Booking {
+  id         String        @id @default(cuid())
+  businessId String
+  business   Business      @relation(fields: [businessId], references: [id])
+  staffId    String
+  staff      Staff         @relation(fields: [staffId], references: [id])
+  serviceId  String
+  service    Service       @relation(fields: [serviceId], references: [id])
+  clientName String
+  clientEmail String
+  clientPhone String?
+  notes      String?
+  startTime  DateTime // UTC
+  endTime    DateTime // UTC
+  status     BookingStatus @default(PENDING)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  cancelledAt DateTime?
+
+  @@unique([staffId, startTime])
+  @@index([businessId])
+  @@index([staffId])
+  @@index([serviceId])
+  @@index([startTime])
+  @@index([status])
+  @@index([clientEmail])
+}
+

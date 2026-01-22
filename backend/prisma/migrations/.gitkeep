@@ -1,0 +1,10 @@
+/*
+  Warnings:
+
+  - You are about to drop the `_prisma_migrations` table. If the table has important data, check what will be done.
+
+*/
+-- DropTable
+DROP TABLE IF EXISTS "_prisma_migrations";
+
+-- Initial migration placeholder
